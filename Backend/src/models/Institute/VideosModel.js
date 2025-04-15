@@ -18,11 +18,14 @@ const videoSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Module",
       required: true,
+    }, 
+    Thumbnail: {
+      type: String,
+      
     },
-    CourseId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Course",
-      required: true,
+    Description: {
+      type: String,
+      
     },
   },
   { timestamps: true }

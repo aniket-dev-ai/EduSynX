@@ -8,10 +8,17 @@ const instituteSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  Owner:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   InstituteCode: {
     type: String,
     required: true,
     unique: true,
+  },
+  BannerImage:{
+    type: String,
   },
   Address: {
     type: String,

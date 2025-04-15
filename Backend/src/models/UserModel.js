@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema(
     },
     Role: {
       type: String,
-      enum: ["Admin", "Student", "Parents", "Teacher"],
+      enum: ["Institute", "Student", "Parents", "Teacher"],
       default: "user",
     },
     ProfileImage: {
@@ -68,6 +68,7 @@ const userSchema = new mongoose.Schema(
 
 userSchema.statics.generatePasswordHash = async function (password) {
   try {
+    console.log("Generating password hash...");
     const salt = await bcrypt.genSalt(10);
     return await bcrypt.hash(password, salt);
   } catch (error) {
@@ -83,9 +84,20 @@ userSchema.statics.comparePassword = async function (password, hash) {
   }
 };
 
-userSchema.statics.generateAuthToken = function (user) {
+userSchema.methods.generateAuthToken = function () {
   try {
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    console.log("Generating auth token...");
+    console.log(`User: ${this}`);
+    console.log(`User ID: ${this._id}`);
+    if (!this) {
+      console.log("User not found");
+      return null;
+    }
+    if (!this._id) {
+      console.log("User ID not found");
+      return null;
+    }
+    const token = jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
     return token;

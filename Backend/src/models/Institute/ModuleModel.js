@@ -5,22 +5,7 @@ const moduleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  Lectures: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Lecture",
-    },
-  ],
-  TotalLectures: {
-    type: Number,
-    default: 0,
-  },
-  CourseId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Course",
-    required: true,
-  },
-  Videos: [
+  Video: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Video",
@@ -29,6 +14,11 @@ const moduleSchema = new mongoose.Schema({
   TotalVideos: {
     type: Number,
     default: 0,
+  },
+  CourseId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Course",
+    required: true,
   },
   Notes: [
     {
