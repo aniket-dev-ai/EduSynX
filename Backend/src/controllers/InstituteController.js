@@ -82,6 +82,29 @@ export const createInstitute = asyncHandler(async (req, res) => {
   });
 });
 
+export const getInstitute = asyncHandler(async (req, res) => {
+  console.log(req.user);
+  const { _id } = req.user;
+  console.log(`Fetching institute for user ID: ${_id}`);
+  if (!_id) {
+    res.status(400);
+    throw new Error("User ID is required");
+  }
+  const institute = await InstituteModel.findOne({ Owner: _id });
+
+  if (!institute) {
+    res.status(404);
+    throw new Error("Institute not found for this user");
+  }
+
+  console.log("🎯 Institute found:", institute);
+
+  res.status(200).json({
+    message: "Institute fetched successfully ✅",
+    institute,
+  });
+});
+
 export const getInstituteByCode = asyncHandler(async (req, res) => {
   const { code } = req.params;
   console.log(`Fetching institute with code: ${code}`);
@@ -110,5 +133,3 @@ export const getInstituteByCode = asyncHandler(async (req, res) => {
     institute,
   });
 });
- 
-

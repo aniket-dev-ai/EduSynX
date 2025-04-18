@@ -1,150 +1,166 @@
-import React, { useState } from "react";
-import { FaUsers, FaBook, FaChalkboardTeacher, FaMoneyBillWave, FaTachometerAlt, FaBars } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import {
+  FaUsers,
+  FaBook,
+  FaChalkboardTeacher,
+  FaMoneyBillWave,
+  FaBars,
+  FaTachometerAlt,
+} from "react-icons/fa";
 import CreateTeacherForm from "./CreateTeacher";
 import CreateCourseForm from "./CreateCourse";
+import { useDispatch } from "react-redux";
+import { FetchInstitute } from "../../Redux/Slice/InstituteSlice";
 
 const Dashboard = ({ theme = "light" }) => {
   const [activeTab, setActiveTab] = useState("teachers");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const isDark = theme === "dark";
-
   const bg = isDark ? "bg-darkBg" : "bg-lightBg";
-  const card = isDark ? "bg-darkCard" : "bg-lightCard";
   const text = isDark ? "text-darkText" : "text-lightText";
   const primary = isDark ? "text-darkPrimary" : "text-lightPrimary";
-  const inputBg = isDark ? "bg-[#1A1A1A]" : "bg-[#FAFAFA]";
 
-  const totalTeachers = 12;
-  const totalStudents = 120;
-  const totalParents = 80;
-  const totalCourses = 5;
-  const totalIncome = 120000; // Just a dummy calculation (can use real data)
+  const dispatch = useDispatch();
+  const [instituteData, setInstituteData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Dummy data display for teachers
-  const AllTeachers = () => {
-    const teachers = [
-      { name: "Teacher 1", email: "teacher1@edu.com" },
-      { name: "Teacher 2", email: "teacher2@edu.com" },
-      { name: "Teacher 3", email: "teacher3@edu.com" },
-    ];
+  // Fetching institute data inside useEffect
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const data = await dispatch(FetchInstitute());
+        console.log(data.payload); //frontend me show ho rha hai
+        if (data) {
+          setInstituteData(data.payload); 
+        } else {
+          setError("Institute data not found");
+        }
+      } catch (err) {
+        console.error("Failed to fetch institute data:", err);
+        setError("Failed to fetch data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  const Summary = () => {
+    // Conditional rendering based on loading or error state
+    if (loading) return <p className={`${text}`}>Loading... ⏳</p>;
+    if (error) return <p className={`${text}`}>Error: {error} 😢</p>;
 
     return (
-      <div className="space-y-4">
-        <h3 className="text-xl font-bold mb-4">All Teachers</h3>
-        <ul className="space-y-2">
-          {teachers.map((teacher, index) => (
-            <li key={index} className="bg-gray-100 p-4 rounded-lg shadow-md hover:bg-gray-200 transition duration-300">
-              <p className="text-lg font-semibold">{teacher.name}</p>
-              <p className="text-sm text-gray-500">{teacher.email}</p>
-            </li>
-          ))}
-        </ul>
+      <div
+        className={`p-6 rounded-xl shadow-lg ${
+          isDark ? "bg-darkCard" : "bg-white"
+        } ${text} space-y-4`}
+      >
+        <h2 className={`text-2xl font-bold mb-2 ${primary}`}>
+          🏫 Institute Info
+        </h2>
+        {instituteData ? (
+          <>
+            <img
+              src={instituteData.ProfileImage}
+              alt="Institute Logo"
+              className="w-24 h-24 rounded-full"
+            />
+            <p>
+              <strong>Name:</strong> {instituteData.InstituteName}
+            </p>
+            <p>
+              <strong>Email:</strong> {instituteData.Email}
+            </p>
+            <p>
+              <strong>Phone:</strong> {instituteData.Phone}
+            </p>
+            <p>
+              <strong>Address:</strong> {instituteData.Address},{" "}
+              {instituteData.City}, {instituteData.State} - {instituteData.Zip}
+            </p>
+            <p>
+              <strong>Country:</strong> {instituteData.Country}
+            </p>
+            <p>
+              <strong>Website:</strong> {instituteData.Website}
+            </p>
+            <p>
+              <strong>KYC Verified:</strong>{" "}
+              {instituteData.KYCVerified ? "✅" : "❌"}
+            </p>
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              <Stat label="Students" value={instituteData.TotalStudents} />
+              <Stat label="Teachers" value={instituteData.TotalTeachers} />
+              <Stat label="Parents" value={instituteData.TotalParents} />
+              <Stat label="Courses" value={instituteData.TotalCourses} />
+            </div>
+          </>
+        ) : (
+          <p>No Institute data available yet 😔</p>
+        )}
       </div>
     );
   };
 
-  // Dummy data display for students
-  const AllStudents = () => {
-    const students = [
-      { name: "Student 1", email: "student1@edu.com" },
-      { name: "Student 2", email: "student2@edu.com" },
-      { name: "Student 3", email: "student3@edu.com" },
-    ];
-
-    return (
-      <div className="space-y-4">
-        <h3 className="text-xl font-bold mb-4">All Students</h3>
-        <ul className="space-y-2">
-          {students.map((student, index) => (
-            <li key={index} className="bg-gray-100 p-4 rounded-lg shadow-md hover:bg-gray-200 transition duration-300">
-              <p className="text-lg font-semibold">{student.name}</p>
-              <p className="text-sm text-gray-500">{student.email}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  };
-
-  // Dummy data display for parents
-  const AllParents = () => {
-    const parents = [
-      { name: "Parent 1", email: "parent1@edu.com" },
-      { name: "Parent 2", email: "parent2@edu.com" },
-      { name: "Parent 3", email: "parent3@edu.com" },
-    ];
-
-    return (
-      <div className="space-y-4">
-        <h3 className="text-xl font-bold mb-4">All Parents</h3>
-        <ul className="space-y-2">
-          {parents.map((parent, index) => (
-            <li key={index} className="bg-gray-100 p-4 rounded-lg shadow-md hover:bg-gray-200 transition duration-300">
-              <p className="text-lg font-semibold">{parent.name}</p>
-              <p className="text-sm text-gray-500">{parent.email}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  };
-
-  // Dummy total income & course stats
-  const TotalIncomeCourses = ({ totalCourses, totalIncome }) => {
-    return (
-      <div className="space-y-4">
-        <h3 className="text-xl font-bold mb-4">Total Stats</h3>
-        <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200 space-y-4">
-          <p className="text-lg font-semibold">Total Courses: {totalCourses}</p>
-          <p className="text-lg font-semibold">Total Income: ₹{totalIncome}</p>
-        </div>
-      </div>
-    );
-  };
+  const Stat = ({ label, value }) => (
+    <div
+      className={`p-4 rounded-md shadow ${
+        isDark ? "bg-darkCard" : "bg-gray-100"
+      } text-center`}
+    >
+      <p className="text-lg font-semibold">{value}</p>
+      <p className="text-sm">{label}</p>
+    </div>
+  );
 
   return (
     <div className={`${bg} min-h-screen flex`}>
       {/* Sidebar */}
-      <div className={`w-1/4 p-6 bg-gray-800 text-white ${sidebarOpen ? "block" : "hidden"} md:block`}>
-        <h2 className="text-3xl font-bold text-center mb-6">Institute Dashboard</h2>
+      <div
+        className={`w-1/4 p-6 bg-gray-800 text-white ${
+          sidebarOpen ? "block" : "hidden"
+        } md:block`}
+      >
+        <h2 className="text-3xl font-bold text-center mb-6">
+          Institute Dashboard
+        </h2>
         <nav className="space-y-4">
-          <button
-            className={`w-full text-left py-3 px-4 rounded-md hover:bg-gray-700 ${activeTab === "teachers" && "bg-gray-700"}`}
-            onClick={() => setActiveTab("teachers")}
-          >
-            <FaChalkboardTeacher className="inline mr-2" /> Add Teacher
-          </button>
-          <button
-            className={`w-full text-left py-3 px-4 rounded-md hover:bg-gray-700 ${activeTab === "courses" && "bg-gray-700"}`}
-            onClick={() => setActiveTab("courses")}
-          >
-            <FaBook className="inline mr-2" /> Create Course
-          </button>
-          <button
-            className={`w-full text-left py-3 px-4 rounded-md hover:bg-gray-700 ${activeTab === "allTeachers" && "bg-gray-700"}`}
-            onClick={() => setActiveTab("allTeachers")}
-          >
-            <FaChalkboardTeacher className="inline mr-2" /> Show All Teachers
-          </button>
-          <button
-            className={`w-full text-left py-3 px-4 rounded-md hover:bg-gray-700 ${activeTab === "students" && "bg-gray-700"}`}
-            onClick={() => setActiveTab("students")}
-          >
-            <FaUsers className="inline mr-2" /> Show All Students
-          </button>
-          <button
-            className={`w-full text-left py-3 px-4 rounded-md hover:bg-gray-700 ${activeTab === "parents" && "bg-gray-700"}`}
-            onClick={() => setActiveTab("parents")}
-          >
-            <FaUsers className="inline mr-2" /> Show All Parents
-          </button>
-          <button
-            className={`w-full text-left py-3 px-4 rounded-md hover:bg-gray-700 ${activeTab === "total" && "bg-gray-700"}`}
-            onClick={() => setActiveTab("total")}
-          >
-            <FaMoneyBillWave className="inline mr-2" /> Total Income & Courses
-          </button>
+          <SidebarBtn
+            label="Add Teacher"
+            icon={<FaChalkboardTeacher />}
+            tab="teachers"
+          />
+          <SidebarBtn label="Create Course" icon={<FaBook />} tab="courses" />
+          <SidebarBtn
+            label="Show All Teachers"
+            icon={<FaChalkboardTeacher />}
+            tab="allTeachers"
+          />
+          <SidebarBtn
+            label="Show All Students"
+            icon={<FaUsers />}
+            tab="students"
+          />
+          <SidebarBtn
+            label="Show All Parents"
+            icon={<FaUsers />}
+            tab="parents"
+          />
+          <SidebarBtn
+            label="Total Income & Courses"
+            icon={<FaMoneyBillWave />}
+            tab="total"
+          />
+          <SidebarBtn
+            label="Institute Info"
+            icon={<FaTachometerAlt />}
+            tab="summary"
+          />
         </nav>
       </div>
 
@@ -162,10 +178,50 @@ const Dashboard = ({ theme = "light" }) => {
         {activeTab === "allTeachers" && <AllTeachers />}
         {activeTab === "students" && <AllStudents />}
         {activeTab === "parents" && <AllParents />}
-        {activeTab === "total" && <TotalIncomeCourses totalCourses={totalCourses} totalIncome={totalIncome} />}
+        {activeTab === "total" && <TotalIncomeCourses />}
+        {activeTab === "summary" && <Summary />}
       </div>
     </div>
   );
+
+  function SidebarBtn({ label, icon, tab }) {
+    return (
+      <button
+        className={`w-full text-left py-3 px-4 rounded-md hover:bg-gray-700 ${
+          activeTab === tab ? "bg-gray-700" : ""
+        }`}
+        onClick={() => setActiveTab(tab)}
+      >
+        {icon} <span className="ml-2">{label}</span>
+      </button>
+    );
+  }
+
+  function AllTeachers() {
+    return <p className={`${text}`}>Showing all teachers (dummy)...</p>;
+  }
+
+  function AllStudents() {
+    return <p className={`${text}`}>Showing all students (dummy)...</p>;
+  }
+
+  function AllParents() {
+    return <p className={`${text}`}>Showing all parents (dummy)...</p>;
+  }
+
+  function TotalIncomeCourses() {
+    return (
+      <div
+        className={`p-6 rounded-xl shadow-lg ${
+          isDark ? "bg-darkCard" : "bg-white"
+        } ${text}`}
+      >
+        <h2 className={`text-xl font-bold mb-4 ${primary}`}>📊 Stats</h2>
+        <p>Total Income: ₹1,20,000</p>
+        <p>Total Courses: 5</p>
+      </div>
+    );
+  }
 };
 
 export default Dashboard;

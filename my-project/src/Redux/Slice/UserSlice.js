@@ -1,27 +1,35 @@
 // src/redux/slices/userSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'; 
-import { loginUser, registerUser } from '../Auth/UserApi';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { loginUser, registerUser } from "../Auth/UserApi";
 
-export const register = createAsyncThunk("user/register", async (userData, thunkAPI) => {
-  try {
-    return await registerUser(userData);
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.response.data);
+export const register = createAsyncThunk(
+  "user/register",
+  async (userData, thunkAPI) => {
+    try {
+      return await registerUser(userData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
   }
-});
+);
 
-export const login = createAsyncThunk("user/login", async (loginData, thunkAPI) => {
-  try {
-    return await loginUser(loginData);
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.response.data);
+export const login = createAsyncThunk(
+  "user/login",
+  async (loginData, thunkAPI) => {
+    try {
+      return await loginUser(loginData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
   }
-});
+);
 
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: null,
+    user: localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user"))
+      : null,
     loading: false,
     error: null,
   },
@@ -42,7 +50,7 @@ const userSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || 'Registration failed';
+        state.error = action.payload?.message || "Registration failed";
       })
       .addCase(login.pending, (state) => {
         state.loading = true;
@@ -51,10 +59,11 @@ const userSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
+        localStorage.setItem("user", JSON.stringify(action.payload));
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || 'Login failed';
+        state.error = action.payload?.message || "Login failed";
       });
   },
 });
