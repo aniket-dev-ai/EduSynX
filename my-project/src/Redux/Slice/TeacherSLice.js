@@ -1,10 +1,10 @@
 // src/redux/slices/teacherSlice.js
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'; 
-import { createTeacher, getAllTeachers } from '../Auth/teacherApi';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createTeacher, getAllTeachers } from "../Auth/teacherApi";
 
 // 💥 Async Thunks
 export const addTeacher = createAsyncThunk(
-  'teacher/create',
+  "teacher/create",
   async (data, thunkAPI) => {
     try {
       return await createTeacher(data);
@@ -15,7 +15,7 @@ export const addTeacher = createAsyncThunk(
 );
 
 export const fetchAllTeachers = createAsyncThunk(
-  'teacher/getAll',
+  "teacher/getAll",
   async (_, thunkAPI) => {
     try {
       return await getAllTeachers();
@@ -27,9 +27,11 @@ export const fetchAllTeachers = createAsyncThunk(
 
 // 💖 Teacher Slice
 const teacherSlice = createSlice({
-  name: 'teacher',
+  name: "teacher",
   initialState: {
-    teachers: [],
+    teachers: localStorage.getItem("teachers")
+      ? JSON.parse(localStorage.getItem("teachers"))
+      : [], // Load from localStorage
     loading: false,
     error: null,
   },
@@ -51,7 +53,7 @@ const teacherSlice = createSlice({
       })
       .addCase(addTeacher.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || 'Failed to create teacher';
+        state.error = action.payload?.message || "Failed to create teacher";
       })
 
       .addCase(fetchAllTeachers.pending, (state) => {
@@ -61,10 +63,11 @@ const teacherSlice = createSlice({
       .addCase(fetchAllTeachers.fulfilled, (state, action) => {
         state.loading = false;
         state.teachers = action.payload;
+        localStorage.setItem("teachers", JSON.stringify(action.payload)); // Save to localStorage
       })
       .addCase(fetchAllTeachers.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload?.message || 'Failed to fetch teachers';
+        state.error = action.payload?.message || "Failed to fetch teachers";
       });
   },
 });

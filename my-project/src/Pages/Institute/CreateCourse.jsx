@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllTeachers } from "../../Redux/Slice/TeacherSLice";
 
 const CreateCourseForm = ({ theme = "light" }) => {
   const isDark = theme === "dark";
@@ -9,34 +11,111 @@ const CreateCourseForm = ({ theme = "light" }) => {
   const primary = isDark ? "text-darkPrimary" : "text-lightPrimary";
   const inputBg = isDark ? "bg-[#1A1A1A]" : "bg-[#FAFAFA]";
 
+  const dispatch = useDispatch();
+  const [teachers, setteachers] = useState([]);
+
+  const [formData, setFormData] = useState({
+    CourseName: "",
+    CourseCode: "",
+    Description: "",
+    Duration: "",
+    Fees: "",
+    Teacher: "",
+  });
+
+  useEffect(
+    () => async () => {
+      const data = await dispatch(fetchAllTeachers());
+      console.log(data.payload.teachers);
+      setteachers(data.payload.teachers);
+    },
+    [dispatch]
+  );
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Course Form Submitted:", formData);
+    
+  };
+
   return (
     <div className={`${bg} min-h-screen flex items-center justify-center px-4`}>
       <form
+        onSubmit={handleSubmit}
         className={`${card} p-8 rounded-xl shadow-lg w-full max-w-2xl ${text} font-poppins space-y-6`}
       >
-        <h2 className={`text-2xl font-bold mb-2 ${primary}`}>Create New Course 🎓</h2>
+        <h2 className={`text-2xl font-bold mb-2 ${primary}`}>
+          Create New Course 🎓
+        </h2>
         <p className="text-sm">Fill the course details below 📋</p>
 
-        <Input label="Course Name" name="CourseName" inputBg={inputBg} text={text} />
-        <Input label="Course Code" name="CourseCode" inputBg={inputBg} text={text} />
-        <Input label="Description" name="Description" inputBg={inputBg} text={text} />
-        <Input label="Duration (in weeks)" name="Duration" inputBg={inputBg} text={text} />
-        <Input label="Fees" name="Fees" type="number" inputBg={inputBg} text={text} />
+        <Input
+          label="Course Name"
+          name="CourseName"
+          value={formData.CourseName}
+          onChange={handleChange}
+          inputBg={inputBg}
+          text={text}
+        />
+        <Input
+          label="Course Code"
+          name="CourseCode"
+          value={formData.CourseCode}
+          onChange={handleChange}
+          inputBg={inputBg}
+          text={text}
+        />
+        <Input
+          label="Description"
+          name="Description"
+          value={formData.Description}
+          onChange={handleChange}
+          inputBg={inputBg}
+          text={text}
+        />
+        <Input
+          label="Duration (in weeks)"
+          name="Duration"
+          value={formData.Duration}
+          onChange={handleChange}
+          inputBg={inputBg}
+          text={text}
+        />
+        <Input
+          label="Fees"
+          name="Fees"
+          type="number"
+          value={formData.Fees}
+          onChange={handleChange}
+          inputBg={inputBg}
+          text={text}
+        />
 
         <div className="flex flex-col">
-          <label htmlFor="Teacher" className={`mb-1 text-sm font-medium ${text}`}>
+          <label
+            htmlFor="Teacher"
+            className={`mb-1 text-sm font-medium ${text}`}
+          >
             Assign Teacher
           </label>
           <select
             name="Teacher"
             id="Teacher"
+            value={formData.Teacher}
+            onChange={handleChange}
             className={`px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary ${inputBg} ${text}`}
           >
-            <option value="" disabled>Select a Teacher</option>
-            <option value="teacher1">Teacher 1</option>
-            <option value="teacher2">Teacher 2</option>
-            <option value="teacher3">Teacher 3</option>
-            {/* You can dynamically generate teacher options from backend data */}
+            <option value="">Select a Teacher</option>
+            {teachers?.map((teacher) => (
+              <option key={teacher._id} value={teacher._id}>
+                {teacher.FirstName} {teacher.LastName}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -53,7 +132,15 @@ const CreateCourseForm = ({ theme = "light" }) => {
   );
 };
 
-const Input = ({ label, name, type = "text", inputBg, text }) => (
+const Input = ({
+  label,
+  name,
+  type = "text",
+  value,
+  onChange,
+  inputBg,
+  text,
+}) => (
   <div className="flex flex-col">
     <label htmlFor={name} className={`mb-1 text-sm font-medium ${text}`}>
       {label}
@@ -62,6 +149,8 @@ const Input = ({ label, name, type = "text", inputBg, text }) => (
       type={type}
       name={name}
       id={name}
+      value={value}
+      onChange={onChange}
       placeholder={label}
       className={`px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary ${inputBg} ${text}`}
     />

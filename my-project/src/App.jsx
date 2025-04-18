@@ -24,10 +24,10 @@ function App() {
     >
       <ThemeChanger />
       {/* <UserForm theme={theme} /> */}
-      <LoginForm theme={theme} />
-      <InstituteForm theme={theme} />
+      {/* <LoginForm theme={theme} /> */}
+      {/* <InstituteForm theme={theme} /> */}
       {/* <CreateTeacherForm theme={theme} /> */}
-      {/* <CreateCourseForm theme={theme} /> */}
+      <CreateCourseForm theme={theme} />
       /* <Dashboard theme={theme} />
       {/* <CoursePage theme={theme} /> */}
       {/* <ModulePage theme={theme} /> */}

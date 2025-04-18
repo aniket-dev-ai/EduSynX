@@ -16,6 +16,17 @@ export const createTeacher = asyncHandler(async (req, res) => {
     InstituteId,
   } = req.body;
 
+  console.log(`Missing required fields:
+    FirstName: ${FirstName}
+    LastName: ${LastName}
+    Email: ${Email}
+    Phone: ${Phone}
+    Address: ${Address}
+    City: ${City}
+    State: ${State}
+    Zip: ${Zip}
+    Country: ${Country}
+    InstituteId: ${InstituteId}`);
   // 🛡️ Validate required fields
   if (
     !FirstName?.trim() ||
@@ -26,8 +37,7 @@ export const createTeacher = asyncHandler(async (req, res) => {
     !City?.trim() ||
     !State?.trim() ||
     !Zip?.trim() ||
-    !Country?.trim() ||
-    !InstituteId?.trim()
+    !Country?.trim()
   ) {
     res.status(400);
     throw new Error("All required fields must be provided");
@@ -74,8 +84,11 @@ export const createTeacher = asyncHandler(async (req, res) => {
   // 🔗 Push teacher into Institute's list (if needed)
   await Institute.findByIdAndUpdate(
     institute._id,
-    { $push: { Teachers: savedTeacher._id } },
-    { new: true }
+    { $push: { Teachers: savedTeacher._id }, $inc: { TotalTeachers: 1 } },
+    {
+      new: true,
+      runValidators: true,
+    }
   );
 
   // 🎉 Send Response
