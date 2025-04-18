@@ -11,7 +11,7 @@ function ThemeChanger() {
   };
 
   return (
-    <div className="flex flex-col fixed items-center justify-center ">
+    <div className="flex z-50 flex-col fixed items-center justify-center ">
       <div
         onClick={changeTheme}
         className={`w-16 h-8 flex items-center rounded-full p-1 cursor-pointer transition-all duration-500 ${

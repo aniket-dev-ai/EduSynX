@@ -1,107 +1,177 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux"; 
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { register } from "../../Redux/Slice/UserSlice";
 
 const UserForm = ({ theme = "light" }) => {
+  const dispatch = useDispatch();
   const isDark = theme === "dark";
 
   const bg = isDark ? "bg-darkBg" : "bg-lightBg";
   const card = isDark ? "bg-darkCard" : "bg-lightCard";
   const text = isDark ? "text-darkText" : "text-lightText";
-  const subText = isDark ? "text-darkSubText" : "text-lightSubText";
-  const primary = isDark ? "text-darkPrimary" : "text-lightPrimary";
   const inputBg = isDark ? "bg-[#1A1A1A]" : "bg-[#FAFAFA]";
+  const primary = isDark ? "text-darkPrimary" : "text-lightPrimary";
+
+  // 🌼 Form State variables
+  const [FirstName, setFirstName] = useState("Aniket");
+  const [LastName, setLastName] = useState("Srivastava");
+  const [Email, setEmail] = useState("aniket.srivastava.id@gmail.com");
+  const [Phone, setPhone] = useState("9336934124");
+  const [Address, setAddress] = useState("a-116 barra 8");
+  const [City, setCity] = useState("Kanpur");
+  const [State, setState] = useState("Uttar Pradesh");
+  const [Zip, setZip] = useState("208027");
+  const [Country, setCountry] = useState("India");
+  const [Role, setRole] = useState("");
+  const [Password, setPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const userData = {
+      FirstName,
+      LastName,
+      Email,
+      Phone,
+      Address,
+      City,
+      State,
+      Zip,
+      Country,
+      Role,
+      Password,
+    };
+
+    try {
+      const res = await dispatch(register(userData));
+      toast.success("User created successfully! 🥳");
+      console.log("Created User:", res);
+    } catch (error) {
+      toast.error("Failed to create user 😢");
+      console.error(error);
+    }
+  };
 
   return (
     <div className={`${bg} min-h-screen flex items-center justify-center p-6`}>
       <form
-        className={`${card} p-8 rounded-xl shadow-lg w-full max-w-2xl ${text} font-poppins space-y-6`}
+        onSubmit={handleSubmit}
+        className={`${card} p-8 rounded-xl shadow-lg w-full max-w-2xl ${text} font-poppins space-y-4`}
       >
         <h2 className={`text-2xl font-semibold mb-4 ${primary}`}>
-          Create Your Account 🚀
+          Register Now ✨
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input label="First Name" name="FirstName" inputBg={inputBg} text={text} />
-          <Input label="Last Name" name="LastName" inputBg={inputBg} text={text} />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input label="Email" name="Email" type="email" inputBg={inputBg} text={text} />
-          <Input label="Phone" name="Phone" inputBg={inputBg} text={text} />
-        </div>
-
-        <Input label="Address" name="Address" inputBg={inputBg} text={text} />
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Input label="City" name="City" inputBg={inputBg} text={text} />
-          <Input label="State" name="State" inputBg={inputBg} text={text} />
-          <Input label="Zip" name="Zip" inputBg={inputBg} text={text} />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Input label="Country" name="Country" inputBg={inputBg} text={text} />
-          <Input
-            label="Role"
-            name="Role"
-            type="select"
-            options={["Institute", "Student", "Parents", "Teacher"]}
-            inputBg={inputBg}
-            text={text}
+          <input
+            className={`p-3 rounded-md border ${inputBg}`}
+            type="text"
+            placeholder="First Name"
+            value={FirstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <input
+            className={`p-3 rounded-md border ${inputBg}`}
+            type="text"
+            placeholder="Last Name"
+            value={LastName}
+            onChange={(e) => setLastName(e.target.value)}
           />
         </div>
 
-        <Input
-          label="Password"
-          name="Password"
-          type="password"
-          inputBg={inputBg}
-          text={text}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            className={`p-3 rounded-md border ${inputBg}`}
+            type="Email"
+            placeholder="Email"
+            value={Email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            className={`p-3 rounded-md border ${inputBg}`}
+            type="text"
+            placeholder="Phone"
+            value={Phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </div>
+
+        <input
+          className={`p-3 rounded-md border w-full ${inputBg}`}
+          type="text"
+          placeholder="Address"
+          value={Address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <input
+            className={`p-3 rounded-md border ${inputBg}`}
+            type="text"
+            placeholder="City"
+            value={City}
+            onChange={(e) => setCity(e.target.value)}
+          />
+          <input
+            className={`p-3 rounded-md border ${inputBg}`}
+            type="text"
+            placeholder="State"
+            value={State}
+            onChange={(e) => setState(e.target.value)}
+          />
+          <input
+            className={`p-3 rounded-md border ${inputBg}`}
+            type="text"
+            placeholder="Zip"
+            value={Zip}
+            onChange={(e) => setZip(e.target.value)}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            className={`p-3 rounded-md border ${inputBg}`}
+            type="text"
+            placeholder="Country"
+            value={Country}
+            onChange={(e) => setCountry(e.target.value)}
+          />
+
+          <select
+            className={`p-3 rounded-md border ${inputBg}`}
+            value={Role}
+            onChange={(e) => setRole(e.target.value)}
+          >
+            <option value="">Select Role</option>
+            <option value="Student">Student</option>
+            <option value="Teacher">Teacher</option>
+            <option value="Institute">Institute</option>
+            <option value="Parents">Parents</option>
+          </select>
+        </div>
+
+        <input
+          className={`p-3 rounded-md border w-full ${inputBg}`}
+          type="Password"
+          placeholder="Password"
+          value={Password}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <button
           type="submit"
           className={`w-full py-3 mt-4 rounded-md font-semibold ${
             isDark ? "bg-darkPrimary text-black" : "bg-lightPrimary text-white"
-          } hover:opacity-90 transition`}
+          } hover:opaCity-90 transition`}
         >
-          Submit 💌
+          Create Account 💖
         </button>
       </form>
     </div>
   );
 };
-
-// 🎯 Updated Input component to handle text & select
-const Input = ({ label, name, type = "text", inputBg, text, options }) => (
-  <div className="flex flex-col">
-    <label htmlFor={name} className={`mb-1 text-sm font-medium ${text}`}>
-      {label}
-    </label>
-
-    {type === "select" ? (
-      <select
-        name={name}
-        id={name}
-        className={`px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary ${inputBg} ${text}`}
-        defaultValue=""
-      >
-        <option value="" disabled>
-          Select {label}
-        </option>
-        {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt}
-          </option>
-        ))}
-      </select>
-    ) : (
-      <input
-        type={type}
-        name={name}
-        id={name}
-        className={`px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary ${inputBg} ${text}`}
-      />
-    )}
-  </div>
-);
 
 export default UserForm;

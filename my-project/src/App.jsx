@@ -6,6 +6,9 @@ import LoginForm from "./Pages/Auth/User.Login";
 import InstituteForm from "./Pages/Institute/CreateInstitute";
 import CreateTeacherForm from "./Pages/Institute/CreateTeacher";
 import CreateCourseForm from "./Pages/Institute/CreateCourse";
+import Dashboard from "./Pages/Institute/DashBoard";
+import CoursePage from "./Pages/Institute/Course/CoursePage";
+import ModulePage from "./Pages/Institute/Course/Module/ModulePage";
 
 function App() {
   const theme = useSelector((state) => state.theme.theme);
@@ -22,9 +25,12 @@ function App() {
       <ThemeChanger />
       <UserForm theme={theme} />
       <LoginForm theme={theme} />
-      <InstituteForm theme={theme} />
-      <CreateTeacherForm theme={theme} />
-      <CreateCourseForm theme={theme}/>
+      {/* <InstituteForm theme={theme} /> */}
+      {/* <CreateTeacherForm theme={theme} /> */}
+      {/* <CreateCourseForm theme={theme} /> */}
+      {/* /* <Dashboard theme={theme} /> */}
+      {/* <CoursePage theme={theme} /> */}
+      {/* <ModulePage theme={theme} /> */}
     </div>
   );
 }
