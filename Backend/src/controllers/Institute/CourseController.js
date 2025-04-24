@@ -1,9 +1,12 @@
-import Course from "../models/Institute/CourseModel.js";
-import Institute from "../models/Institute/InstitueModel.js";
+import Course from "../../models/Institute/CourseModel.js";
+import Institute from "../../models/Institute/InstitueModel.js";
 import asyncHandler from "express-async-handler";
 
 // 🎓 Create a New Course
 export const createCourse = asyncHandler(async (req, res) => {
+  console.log("Creating a new course...");
+  console.log("Request Body:", req.body);
+  console.log("Request Params:", req.params);
   const { CourseName, CourseCode, Description, Duration, Fees, Teacher } =
     req.body;
 
@@ -71,7 +74,7 @@ export const createCourse = asyncHandler(async (req, res) => {
   await Institute.findByIdAndUpdate(
     InstituteId,
     {
-      $push: { Courses: course._id },
+      $push: { Cousres: course._id },
       $inc: { TotalCourses: 1 },
     },
     { new: true }

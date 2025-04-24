@@ -1,5 +1,5 @@
-import TeacherModel from "../models/Institute/TeacherModel.js";
-import Institute from "../models/Institute/InstitueModel.js";
+import TeacherModel from "../../models/Institute/TeacherModel.js";
+import Institute from "../../models/Institute/InstitueModel.js";
 import asyncHandler from "express-async-handler";
 
 export const createTeacher = asyncHandler(async (req, res) => {

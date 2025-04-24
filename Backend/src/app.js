@@ -8,13 +8,13 @@ const app = express();
 
 dotenv.config();
 
-app.use(cors(
-    {
-        origin: process.env.FRONTEND_URL,
-        methods: ["GET", "POST", "PUT", "DELETE"],
-        credentials: true,
-    }
-));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -29,6 +29,7 @@ import ModuleRoute from "./routes/ModuleRoute.js";
 import VideoRoute from "./routes/VideoRoute.js";
 import AssignmentRoute from "./routes/AssignmentRoute.js";
 
+import studentRoute from "./routes/StudentRoute.js";
 app.use("/api/user", userRoute);
 app.use("/api/institute", instituteRoute);
 app.use("/api/teacher", teacherroute);
@@ -37,4 +38,5 @@ app.use("/api/module", ModuleRoute);
 app.use("/api/video", VideoRoute);
 app.use("/api/assignment", AssignmentRoute);
 
+app.use("/api/student", studentRoute);
 export default app;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllTeachers } from "../../Redux/Slice/TeacherSLice";
+import { addCourse } from "../../Redux/Slice/CourseSlice";
 
 const CreateCourseForm = ({ theme = "light" }) => {
   const isDark = theme === "dark";
@@ -37,10 +38,20 @@ const CreateCourseForm = ({ theme = "light" }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const instituteId = useSelector((state) => state.Institute.data._id);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Course Form Submitted:", formData);
-    
+    const courseData = formData;
+
+    console.log("Course Form Submitted:", { instituteId, ...formData });
+    await dispatch(addCourse({ instituteId, courseData }))
+      .unwrap()
+      .then((res) => {
+        console.log("Course added successfully:", res);
+      })
+      .catch((error) => {
+        console.error("Failed to add course:", error);
+      });
   };
 
   return (

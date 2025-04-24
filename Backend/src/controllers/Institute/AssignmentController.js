@@ -1,5 +1,5 @@
-import Assignment from "../models/Institute/AssignmentModel.js";
-import Module from "../models/Institute/ModuleModel.js";
+import Assignment from "../../models/Institute/AssignmentModel.js";
+import Module from "../../models/Institute/ModuleModel.js";
 import asyncHandler from "express-async-handler";
 
 export const createAssignment = asyncHandler(async (req, res) => {

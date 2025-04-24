@@ -1,6 +1,6 @@
 import express from "express";
-import { auth, isInstitute } from "../Middleware/Auth.js";
-import { createVideo } from "../controllers/VideosController.js";
+import { auth, isInstitute } from "../../Middleware/Auth.js";
+import { createVideo } from "../../controllers/VideosController.js";
 
 const router = express.Router();
 

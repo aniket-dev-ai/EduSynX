@@ -1,6 +1,6 @@
-import InstituteModel from "../models/Institute/InstitueModel.js";
+import InstituteModel from "../../models/Institute/InstitueModel.js";
 import asyncHandler from "express-async-handler"; // Best practice
-import generateRandomString from "../Utils/GeberateCode.js";
+import generateRandomString from "../../Utils/GeberateCode.js";
 
 export const createInstitute = asyncHandler(async (req, res) => {
   const {

@@ -1,6 +1,6 @@
 import express from "express";
-import { auth, isInstitute } from "../Middleware/Auth.js";
-import { createAssignment } from "../controllers/AssignmentController.js";
+import { auth, isInstitute } from "../../Middleware/Auth.js";
+import { createAssignment } from "../../controllers/Institute/AssignmentController.js";
 
 const router = express.Router();
 

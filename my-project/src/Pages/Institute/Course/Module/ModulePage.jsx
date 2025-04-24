@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { FaVideo, FaBook, FaClipboardList, FaClipboard, FaPlus } from "react-icons/fa";
+import {
+  FaVideo,
+  FaBook,
+  FaClipboardList,
+  FaClipboard,
+  FaPlus,
+} from "react-icons/fa";
 
 const ModulePage = ({ theme = "light" }) => {
   // Dummy data for module details
@@ -25,8 +31,14 @@ const ModulePage = ({ theme = "light" }) => {
   ];
 
   const assignments = [
-    { title: "Assignment 1: Build a Counter App", description: "Create a simple counter app using React state" },
-    { title: "Assignment 2: Manage State with Redux", description: "Use Redux to manage state in a React app" },
+    {
+      title: "Assignment 1: Build a Counter App",
+      description: "Create a simple counter app using React state",
+    },
+    {
+      title: "Assignment 2: Manage State with Redux",
+      description: "Use Redux to manage state in a React app",
+    },
   ];
 
   const [activeTab, setActiveTab] = useState("videos");
@@ -51,22 +63,30 @@ const ModulePage = ({ theme = "light" }) => {
   return (
     <div className={`${bg} min-h-screen p-8`}>
       {/* Module Details Section */}
-      <div className={`${card} p-8 rounded-2xl shadow-xl mb-12 max-w-4xl mx-auto`}>
+      <div
+        className={`${card} p-8 rounded-2xl shadow-xl mb-12 max-w-4xl mx-auto`}
+      >
         <div className="flex justify-between items-center mb-6">
-          <h1 className={`${primary} text-4xl font-extrabold`}>{moduleDetails.ModuleName}</h1>
-          <button
-            onClick={toggleModal}
-            className="bg-green-500 text-white py-2 px-4 rounded-md flex items-center hover:bg-green-600"
-          >
-            <FaPlus className="mr-2" /> Add New
-          </button>
+          <h1 className={`${primary} text-4xl font-extrabold`}>
+            {moduleDetails.ModuleName}
+          </h1>
         </div>
         <div className="text-sm text-gray-500 space-y-2">
-          <p><strong>Course:</strong> {moduleDetails.CourseId}</p>
-          <p><strong>Total Videos:</strong> {moduleDetails.TotalVideos}</p>
-          <p><strong>Total Notes:</strong> {moduleDetails.TotalNotes}</p>
-          <p><strong>Total Assignments:</strong> {moduleDetails.totalAssignments}</p>
-          <p><strong>Test:</strong> {moduleDetails.Test}</p>
+          <p>
+            <strong>Course:</strong> {moduleDetails.CourseId}
+          </p>
+          <p>
+            <strong>Total Videos:</strong> {moduleDetails.TotalVideos}
+          </p>
+          <p>
+            <strong>Total Notes:</strong> {moduleDetails.TotalNotes}
+          </p>
+          <p>
+            <strong>Total Assignments:</strong> {moduleDetails.totalAssignments}
+          </p>
+          <p>
+            <strong>Test:</strong> {moduleDetails.Test}
+          </p>
         </div>
       </div>
 
@@ -104,8 +124,19 @@ const ModulePage = ({ theme = "light" }) => {
           <h2 className={`${primary} text-3xl font-semibold mb-6`}>Videos</h2>
           <ul className="space-y-4">
             {videos.map((video, index) => (
-              <li key={index} className={`${isDark ? "bg-gray-700" : "bg-gray-50"} p-6 rounded-xl shadow-lg`}>
-                <p className={`${isDark ? "text-white" : "text-gray-700"} font-semibold`}>{video.title}</p>
+              <li
+                key={index}
+                className={`${
+                  isDark ? "bg-gray-700" : "bg-gray-50"
+                } p-6 rounded-xl shadow-lg`}
+              >
+                <p
+                  className={`${
+                    isDark ? "text-white" : "text-gray-700"
+                  } font-semibold`}
+                >
+                  {video.title}
+                </p>
                 <p className="text-sm text-gray-500">{video.duration}</p>
               </li>
             ))}
@@ -121,8 +152,19 @@ const ModulePage = ({ theme = "light" }) => {
           <h2 className={`${primary} text-3xl font-semibold mb-6`}>Notes</h2>
           <ul className="space-y-4">
             {notes.map((note, index) => (
-              <li key={index} className={`${isDark ? "bg-gray-700" : "bg-gray-50"} p-6 rounded-xl shadow-lg`}>
-                <p className={`${isDark ? "text-white" : "text-gray-700"} font-semibold`}>{note.title}</p>
+              <li
+                key={index}
+                className={`${
+                  isDark ? "bg-gray-700" : "bg-gray-50"
+                } p-6 rounded-xl shadow-lg`}
+              >
+                <p
+                  className={`${
+                    isDark ? "text-white" : "text-gray-700"
+                  } font-semibold`}
+                >
+                  {note.title}
+                </p>
                 <p className="text-sm text-gray-500">{note.content}</p>
               </li>
             ))}
@@ -135,12 +177,27 @@ const ModulePage = ({ theme = "light" }) => {
 
       {activeTab === "assignments" && (
         <div className={`${card} p-8 rounded-2xl shadow-xl`}>
-          <h2 className={`${primary} text-3xl font-semibold mb-6`}>Assignments</h2>
+          <h2 className={`${primary} text-3xl font-semibold mb-6`}>
+            Assignments
+          </h2>
           <ul className="space-y-4">
             {assignments.map((assignment, index) => (
-              <li key={index} className={`${isDark ? "bg-gray-700" : "bg-gray-50"} p-6 rounded-xl shadow-lg`}>
-                <p className={`${isDark ? "text-white" : "text-gray-700"} font-semibold`}>{assignment.title}</p>
-                <p className="text-sm text-gray-500">{assignment.description}</p>
+              <li
+                key={index}
+                className={`${
+                  isDark ? "bg-gray-700" : "bg-gray-50"
+                } p-6 rounded-xl shadow-lg`}
+              >
+                <p
+                  className={`${
+                    isDark ? "text-white" : "text-gray-700"
+                  } font-semibold`}
+                >
+                  {assignment.title}
+                </p>
+                <p className="text-sm text-gray-500">
+                  {assignment.description}
+                </p>
               </li>
             ))}
           </ul>
@@ -157,27 +214,6 @@ const ModulePage = ({ theme = "light" }) => {
           <button className="mt-6 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600">
             <FaPlus className="mr-2" /> Add Test
           </button>
-        </div>
-      )}
-
-      {/* Modal for Adding Content */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-96">
-            <h3 className="text-xl font-semibold mb-4">Add New Item</h3>
-            <input
-              type="text"
-              className="border border-gray-300 p-2 mb-4 w-full rounded-md"
-              placeholder="Title"
-            />
-            <textarea
-              className="border border-gray-300 p-2 mb-4 w-full rounded-md"
-              placeholder="Description"
-            />
-            <button onClick={toggleModal} className="mt-4 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600">
-              Close
-            </button>
-          </div>
         </div>
       )}
     </div>

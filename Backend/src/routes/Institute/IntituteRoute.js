@@ -4,8 +4,8 @@ import {
   createInstitute,
   getInstituteByCode,
   getInstitute
-} from "../controllers/InstituteController.js";
-import { auth } from "../Middleware/Auth.js";
+} from "../../controllers/Institute/InstituteController.js";
+import { auth } from "../../Middleware/Auth.js";
 
 const router = express.Router();
 
